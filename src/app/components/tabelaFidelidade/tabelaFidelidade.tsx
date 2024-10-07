@@ -90,7 +90,8 @@ export default function TabelaFidelidade() {
           </p>
           <h3 className="p-2 text-xl text-gray-800 inline-block">
             {clienteEvidencia?.nomeCliente}
-          </h3>
+          </h3>{" "}
+          <br />
           <p className="p-4 text-xl text-gray-800 inline-block">
             Histórico de Compras:
           </p>
@@ -111,7 +112,6 @@ export default function TabelaFidelidade() {
               );
             })}
           </ul>
-          l
           <Link
             href={"/"}
             className="btnsLeves my-3 mx-8"
