@@ -18,8 +18,9 @@ export default function Home() {
           <h1 className="tituloPromo">Promoção atual:</h1>
           <h1 className="promoNome">Descontos Sanchês</h1>
         </div>
-
-        <TabelaFidelidade></TabelaFidelidade>
+        <div className="mx-auto flex items-center justify-center">
+          <TabelaFidelidade></TabelaFidelidade>
+        </div>
       </div>
     </div>
   );
