@@ -17,7 +17,7 @@ interface Props {
 
 let initControlVar = true;
 
-const Cliente = ({ params }: Props) => {
+export default function Cliente({ params }: Props) {
   const decodedName = decodeURIComponent(params.clienteNome);
   const [dadosForm, setDadosForm] = useState<clienteTipo>({
     nomeCliente: "",
@@ -191,6 +191,4 @@ const Cliente = ({ params }: Props) => {
       )}
     </div>
   );
-};
-
-export default Cliente;
+}
