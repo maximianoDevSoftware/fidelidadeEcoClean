@@ -49,7 +49,7 @@ export default function TabelaFidelidade() {
                         setClienteEvidencia(cliente);
                         setEstadoPagina({ estado: "Historico Cliente" });
                       }}
-                      className="clienteNome"
+                      className="clienteNome cursor-pointer"
                     >
                       {cliente.nomeCliente}
                     </td>
