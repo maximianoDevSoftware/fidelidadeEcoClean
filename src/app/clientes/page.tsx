@@ -40,7 +40,7 @@ export default function TelaAdcClientes() {
     console.log("Cliente criado: ", cliente);
     setEstadoPagina({ estado: "Gerando QR Code..." });
     setQrCodeUrl(
-      `https://fidelidade-eco-clean-92yc.vercel.app/${cliente.nomeCliente}`
+      `https://fidelidade-eco-clean-92yc.vercel.app/adicionandoCompra/${cliente.nomeCliente}`
     );
     setEstadoPagina({ estado: "QR Code Gerado" });
   };
@@ -79,7 +79,7 @@ export default function TelaAdcClientes() {
         <div>
           <h1 className="text-center">
             QR Code gerado para <br />{" "}
-            {`https://fidelidade-eco-clean-92yc.vercel.app/${dadosForm.nomeCliente}`}
+            {`https://fidelidade-eco-clean-92yc.vercel.app/adicionandoCompra/${dadosForm.nomeCliente}`}
           </h1>
           <QRCodeCanvas text={qrCodeUrl} />
 
