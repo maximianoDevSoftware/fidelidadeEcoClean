@@ -29,6 +29,7 @@
   border-bottom: 1px solid black;
 }
 
+<<<<<<< HEAD
 .formAdcCliente .selectFormAdc {
   display: block;
   width: 200px;
@@ -37,6 +38,8 @@
   border-bottom: 1px solid black;
 }
 
+=======
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
 .formAdcCliente button {
   display: block;
   width: 90%;

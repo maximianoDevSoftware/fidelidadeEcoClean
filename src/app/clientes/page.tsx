@@ -32,6 +32,7 @@ export default function TelaAdcClientes() {
     });
   };
 
+<<<<<<< HEAD
   const adicionarBeneficio = (
     nomeBen: string,
     descricaoBen: string,
@@ -41,6 +42,12 @@ export default function TelaAdcClientes() {
       nomeBeneficio: nomeBen,
       descricaoBeneficio: descricaoBen,
       valorBeneficio: valorBen,
+=======
+  const adicionarBeneficio = (nomeBen: string, descricaoBen: string) => {
+    const novoBeneficio = {
+      nomeBeneficio: nomeBen,
+      descricaoBeneficio: descricaoBen,
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
     };
     setDadosForm((prevState) => ({
       ...prevState,
@@ -129,11 +136,15 @@ export default function TelaAdcClientes() {
                       ctrl = false;
                       elementoCheck.checked = true;
                       if (nomeBen && descricaoBen)
+<<<<<<< HEAD
                         adicionarBeneficio(
                           nomeBen,
                           descricaoBen,
                           beneficio.valorBeneficio
                         );
+=======
+                        adicionarBeneficio(nomeBen, descricaoBen);
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
                     } else if (ctrl) {
                       ctrl = false;
                       elementoCheck.checked = false;

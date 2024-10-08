@@ -10,7 +10,10 @@ import sty from "./adcCompraSty.module.css";
 import Link from "next/link";
 import { compraTipo } from "@/types/compraType";
 import { promocaoTipo } from "@/types/promocaoType";
+<<<<<<< HEAD
 import { beneficiosCliente } from "@/app/clientes/beneficiosClientes";
+=======
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
 
 interface Props {
   params: { clienteNome: string };
@@ -23,25 +26,47 @@ export default function Cliente({ params }: Props) {
   const [dadosForm, setDadosForm] = useState<clienteTipo>({
     nomeCliente: "",
     beneficios: [],
+<<<<<<< HEAD
     compras: [],
+=======
+    compras: [
+      {
+        nomeComprador: "",
+        promocao: {
+          nome: "",
+          descricao: "",
+        },
+      },
+    ],
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
   });
 
   const [promocaoSelect, setPromocaoSelect] = useState<promocaoTipo>({
     nome: "",
+<<<<<<< HEAD
     descricao: "Sem desconto promocional",
+=======
+    descricao: "Sem desconto",
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
   });
 
   const [dadosFormCompras, setDadosFormCompras] = useState<compraTipo>({
     nomeComprador: "",
     promocao: promocaoSelect,
+<<<<<<< HEAD
     valorCompra: "",
     modoPagamento: "A vista",
+=======
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
   });
 
   const [promocoes, setPromocoes] = useState<promocaoTipo[]>([]);
 
+<<<<<<< HEAD
   const [descontoBene, setDescontoBene] = useState<number>();
 
+=======
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
   const [estadoPagina, setEstadoPagina] = useState({
     estado: "Identificando Cliente",
   });
@@ -90,8 +115,11 @@ export default function Cliente({ params }: Props) {
         {
           nomeComprador: dadosFormCompras.nomeComprador,
           promocao: promocaoSelect,
+<<<<<<< HEAD
           valorCompra: dadosFormCompras.valorCompra,
           modoPagamento: dadosFormCompras.modoPagamento,
+=======
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
         },
       ],
     };
@@ -104,6 +132,7 @@ export default function Cliente({ params }: Props) {
     console.log(clienteCompra);
   };
 
+<<<<<<< HEAD
   const calculandoDesconto = (valor: string) => {
     const valorTotal = parseFloat(valor.replace(",", "."));
 
@@ -159,6 +188,8 @@ export default function Cliente({ params }: Props) {
     return valorDesconto;
   };
 
+=======
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
   const modificarPromocao = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const nomePromocao = event.target.value;
     const promocoesFiltradas = promocoes.filter((promo) => {
@@ -193,6 +224,7 @@ export default function Cliente({ params }: Props) {
             onChange={atualizandoFormulario}
           />
 
+<<<<<<< HEAD
           <div
             className={`flex items-center text-center text-sm text-gray-500`}
           >
@@ -227,6 +259,8 @@ export default function Cliente({ params }: Props) {
             <span>{calculandoDesconto(dadosFormCompras.valorCompra)}</span>
           </h1>
 
+=======
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
           <p className={`pl-4 mt-4 text-sm text-gray-500`}>
             Benefícios do Cliente:
           </p>
@@ -257,7 +291,10 @@ export default function Cliente({ params }: Props) {
             className={`text-center w-[90%] block mx-auto my-2 py-2 `}
             onChange={modificarPromocao}
           >
+<<<<<<< HEAD
             <option value="Sem promoção">Sem promoção. </option>
+=======
+>>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
             {promocoes.map((promocao, index) => {
               return (
                 <option key={index} value={promocao.nome}>
