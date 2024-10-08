@@ -21,6 +21,7 @@ export default function Cliente({ params }: Props) {
   const decodedName = decodeURIComponent(params.clienteNome);
   const [dadosForm, setDadosForm] = useState<clienteTipo>({
     nomeCliente: "",
+    beneficios: [],
     compras: [
       {
         nomeComprador: "",
@@ -54,6 +55,7 @@ export default function Cliente({ params }: Props) {
         console.log(clienteEncontrado);
         setDadosForm({
           id: clienteEncontrado.id,
+          beneficios: clienteEncontrado.beneficios,
           nomeCliente: clienteEncontrado.nomeCliente,
           compras: clienteEncontrado.compras,
         });
@@ -85,6 +87,7 @@ export default function Cliente({ params }: Props) {
     const clienteCompra: clienteTipo = {
       id: dadosForm.id,
       nomeCliente: dadosForm.nomeCliente,
+      beneficios: dadosForm.beneficios,
       compras: [
         ...dadosForm.compras,
         {
@@ -120,8 +123,45 @@ export default function Cliente({ params }: Props) {
           <p className={`text-center mt-4 text-sm text-gray-500`}>
             Cliente identificado:
           </p>
-          <h3 className={`text-center`}>{dadosForm.nomeCliente}</h3>
-          <p className={`text-center mt-4 text-sm text-gray-500`}>
+          <h3 className={`text-center border-b-2 border-green-500`}>
+            {dadosForm.nomeCliente.toUpperCase()}
+          </h3>
+
+          <p className={`text-center my-2 text-sm text-gray-500`}>
+            Nome do comprador:
+          </p>
+          <input
+            className={`text-center`}
+            type="text"
+            placeholder="Nome aqui..."
+            name="nomeComprador"
+            value={dadosForm.nomeCliente.toUpperCase()}
+            onChange={atualizandoFormulario}
+          />
+
+          <p className={`pl-4 mt-4 text-sm text-gray-500`}>
+            Benefícios do Cliente:
+          </p>
+          {dadosForm.beneficios ? (
+            dadosForm.beneficios.map((beneficioCliente, index) => {
+              return (
+                <div className={`pl-4 mt-4 `} key={index}>
+                  <p className={`text-sm text-gray-950`}>
+                    {beneficioCliente.nomeBeneficio}
+                  </p>
+                  <p className={`text-sm text-gray-600`}>
+                    {beneficioCliente.descricaoBeneficio}
+                  </p>
+                </div>
+              );
+            })
+          ) : (
+            <p className={`pl-4 mt-4 text-sm text-gray-500`}>
+              Nenhum benefício encontrado
+            </p>
+          )}
+
+          <p className={`pl-4 mt-4 text-sm text-gray-500`}>
             Promoção do comprador:
           </p>
           <select
@@ -138,23 +178,13 @@ export default function Cliente({ params }: Props) {
             })}
           </select>
 
-          <p className={`text-center mt-4 text-sm text-gray-500`}>
+          <p className={`pl-4 mt-4 text-sm text-gray-500`}>
             Descrição da promoção:
           </p>
-          <p className={`  px-4 mt-4 text-center text-sm text-gray-900`}>
+          <p className={`  px-4 mt-4 text-left text-sm text-gray-900`}>
             {promocaoSelect.descricao}
           </p>
 
-          <p className={`text-center my-2 text-sm text-gray-500`}>
-            Nome do comprador:
-          </p>
-          <input
-            className={`text-center`}
-            type="text"
-            placeholder="Nome aqui..."
-            name="nomeComprador"
-            onChange={atualizandoFormulario}
-          />
           <button type="submit">Adicionar Compra Fidelidade</button>
 
           <Link href={"/"} className="btnsLeves my-5 w-[90%] mx-auto">

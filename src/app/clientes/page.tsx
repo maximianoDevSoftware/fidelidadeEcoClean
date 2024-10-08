@@ -2,20 +2,24 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import sty from "./styClientesRots.module.css";
-import { clienteTipo } from "@/types/clienteTipo";
+import { beneficiosTipo, clienteTipo } from "@/types/clienteTipo";
 import { adicionandoCliente } from "./minhaApi";
 import { useQRCode } from "next-qrcode";
 import Link from "next/link";
+import { beneficiosCliente } from "./beneficiosClientes";
 
 export default function TelaAdcClientes() {
   const [dadosForm, setDadosForm] = useState<clienteTipo>({
     nomeCliente: "",
+    beneficios: [],
     compras: [],
   });
 
   const [estadoPagina, setEstadoPagina] = useState({
     estado: "Disponível",
   });
+
+  const [stateBeneficos, setStateBeneficios] = useState<beneficiosTipo[]>();
 
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
 
@@ -28,17 +32,44 @@ export default function TelaAdcClientes() {
     });
   };
 
+  const adicionarBeneficio = (nomeBen: string, descricaoBen: string) => {
+    const novoBeneficio = {
+      nomeBeneficio: nomeBen,
+      descricaoBeneficio: descricaoBen,
+    };
+    setDadosForm((prevState) => ({
+      ...prevState,
+      beneficios: [...prevState.beneficios, novoBeneficio],
+    }));
+  };
+
+  // Função para remover um benefício
+  const removerBeneficio = (nomeBen: string) => {
+    setDadosForm((prevState) => ({
+      ...prevState,
+      beneficios: prevState.beneficios.filter(
+        (beneficio) => beneficio.nomeBeneficio !== nomeBen
+      ),
+    }));
+  };
+
   const autenticandoFormulario = async (ev: FormEvent) => {
     ev.preventDefault();
     console.log("Criando cliente: " + dadosForm.nomeCliente);
-    setEstadoPagina({ estado: "Salvando Cliente..." });
+    const beneficios = setEstadoPagina({ estado: "Salvando Cliente..." });
     const dadosFinal: clienteTipo = {
       nomeCliente: dadosForm.nomeCliente.toLowerCase(),
+      beneficios: dadosForm.beneficios,
       compras: dadosForm.compras,
     };
+
+    console.log(dadosFinal);
     const cliente = await adicionandoCliente(dadosFinal);
     console.log("Cliente criado: ", cliente);
     setEstadoPagina({ estado: "Gerando QR Code..." });
+    console.log(
+      `https://fidelidade-eco-clean-92yc.vercel.app/adicionandoCompra/${cliente.nomeCliente}`
+    );
     setQrCodeUrl(
       `https://fidelidade-eco-clean-92yc.vercel.app/adicionandoCompra/${cliente.nomeCliente}`
     );
@@ -56,6 +87,58 @@ export default function TelaAdcClientes() {
             name="nomeCliente"
             onChange={atualizandoFormulario}
           />
+
+          <h3 className={`w-[90%] mx-auto`}>Documento do cliente:</h3>
+          <input
+            type="text"
+            placeholder="RG, CPF ou CNPJ"
+            name="nomeCliente"
+            onChange={atualizandoFormulario}
+          />
+
+          <h3 className={`w-[90%] mx-auto`}>Lista de Benefícios:</h3>
+
+          {beneficiosCliente.map((beneficio, index) => {
+            let ctrl = false;
+            return (
+              <div
+                key={index}
+                className="w-[90%] mx-auto relative pl-10 my-3 pb-2 border-b-2 border-b-gray-400"
+              >
+                <input
+                  type="checkbox"
+                  name="nomeBeneficio"
+                  id="nomeBeneficioID"
+                  className={sty.btnFlex + " absolute left-[10px] top-[0px]"}
+                />
+                <label
+                  htmlFor="nomeBeneficio"
+                  onClick={(ev) => {
+                    const elementoCheck = ev.currentTarget
+                      .previousElementSibling as HTMLInputElement;
+                    const nomeBen = ev.currentTarget.children[0].textContent;
+                    const descricaoBen =
+                      ev.currentTarget.children[1].textContent;
+
+                    if (!ctrl) {
+                      ctrl = false;
+                      elementoCheck.checked = true;
+                      if (nomeBen && descricaoBen)
+                        adicionarBeneficio(nomeBen, descricaoBen);
+                    } else if (ctrl) {
+                      ctrl = false;
+                      elementoCheck.checked = false;
+                      if (nomeBen) removerBeneficio(nomeBen);
+                    }
+                  }}
+                >
+                  <h3>{beneficio.nomeBeneficio}</h3>
+                  <p className="text-sm">{beneficio.descricaoBeneficio}</p>
+                </label>
+              </div>
+            );
+          })}
+
           <button type="submit">Adicionar Cliente</button>
 
           <Link href={"/"} className="btnsLeves my-5 w-[90%] mx-auto">
@@ -79,7 +162,7 @@ export default function TelaAdcClientes() {
         <div>
           <h1 className="text-center">
             QR Code gerado para <br />{" "}
-            {`https://fidelidade-eco-clean-92yc.vercel.app/adicionandoCompra/${dadosForm.nomeCliente}`}
+            {`https://fidelidade-eco-clean-92yc.vercel.app/adicionandoCompra/${dadosForm.nomeCliente.toLowerCase()}`}
           </h1>
           <QRCodeCanvas text={qrCodeUrl} />
 

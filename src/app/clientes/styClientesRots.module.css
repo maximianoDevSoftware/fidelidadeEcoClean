@@ -29,6 +29,15 @@
   border-bottom: 1px solid black;
 }
 
+.btnFlex {
+}
+
+.formAdcCliente .btnFlex {
+  width: 10px;
+  background-color: red;
+  width: auto;
+}
+
 .formAdcCliente button {
   display: block;
   width: 90%;

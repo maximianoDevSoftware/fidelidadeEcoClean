@@ -1,18 +1,24 @@
 "use server";
 import dataConectClientes from "@/database/connectCliente";
-import { clienteTipo } from "@/types/clienteTipo";
+import { beneficiosTipo, clienteTipo } from "@/types/clienteTipo";
 import { compraTipo } from "@/types/compraType";
 
 export async function adicionandoCliente({
   nomeCliente,
+  beneficios,
   compras,
 }: {
   nomeCliente: string;
+  beneficios: beneficiosTipo[];
   compras: compraTipo[];
 }) {
   const connCliente = await dataConectClientes();
   const modelClienteFidelidade = connCliente.model("cliente");
-  const gerandoCliente = new modelClienteFidelidade({ nomeCliente, compras });
+  const gerandoCliente = new modelClienteFidelidade({
+    nomeCliente,
+    beneficios,
+    compras,
+  });
   await gerandoCliente.save().then(() => {
     console.log("Cliente salvo com sucesso.");
   });

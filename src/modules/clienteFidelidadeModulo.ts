@@ -8,6 +8,10 @@ export const clienteFidelidadeSchema = new mongoose.Schema({
   },
 
   nomeCliente: { type: String, required: true },
+  beneficios: {
+    type: [{ nomeBeneficio: String, descricaoBeneficio: String }],
+    required: true,
+  },
   compras: {
     type: [
       {
