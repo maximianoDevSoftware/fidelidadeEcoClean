@@ -1,16 +1,15 @@
 .telaPrincipalCliente {
   width: 100dvw;
-  height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: whitesmoke;
-  flex-direction: column;
+  position: relative;
+  padding: 20px 0;
 }
 
 .formAdcCliente {
   width: 90%;
   box-shadow: 2px 2px 4px #0000005b, -2px -2px 4px #0000005b;
+  margin: 10px auto;
+  padding: 5px 0;
 }
 
 .formAdcCliente h1 {
@@ -29,7 +28,6 @@
   border-bottom: 1px solid black;
 }
 
-<<<<<<< HEAD
 .formAdcCliente .selectFormAdc {
   display: block;
   width: 200px;
@@ -38,8 +36,6 @@
   border-bottom: 1px solid black;
 }
 
-=======
->>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
 .formAdcCliente button {
   display: block;
   width: 90%;

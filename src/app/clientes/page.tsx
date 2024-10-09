@@ -11,6 +11,7 @@ import { beneficiosCliente } from "./beneficiosClientes";
 export default function TelaAdcClientes() {
   const [dadosForm, setDadosForm] = useState<clienteTipo>({
     nomeCliente: "",
+    documento: "",
     beneficios: [],
     compras: [],
   });
@@ -32,23 +33,18 @@ export default function TelaAdcClientes() {
     });
   };
 
-<<<<<<< HEAD
   const adicionarBeneficio = (
     nomeBen: string,
     descricaoBen: string,
     valorBen: number
   ) => {
+    console.log("Benenfício inserido com sucesso");
     const novoBeneficio: beneficiosTipo = {
       nomeBeneficio: nomeBen,
       descricaoBeneficio: descricaoBen,
       valorBeneficio: valorBen,
-=======
-  const adicionarBeneficio = (nomeBen: string, descricaoBen: string) => {
-    const novoBeneficio = {
-      nomeBeneficio: nomeBen,
-      descricaoBeneficio: descricaoBen,
->>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
     };
+    console.log(novoBeneficio);
     setDadosForm((prevState) => ({
       ...prevState,
       beneficios: [...prevState.beneficios, novoBeneficio],
@@ -57,6 +53,7 @@ export default function TelaAdcClientes() {
 
   // Função para remover um benefício
   const removerBeneficio = (nomeBen: string) => {
+    console.log("Removendo beneficio com sucesso!");
     setDadosForm((prevState) => ({
       ...prevState,
       beneficios: prevState.beneficios.filter(
@@ -69,8 +66,10 @@ export default function TelaAdcClientes() {
     ev.preventDefault();
     console.log("Criando cliente: " + dadosForm.nomeCliente);
     const beneficios = setEstadoPagina({ estado: "Salvando Cliente..." });
+
     const dadosFinal: clienteTipo = {
       nomeCliente: dadosForm.nomeCliente.toLowerCase(),
+      documento: dadosForm.documento,
       beneficios: dadosForm.beneficios,
       compras: dadosForm.compras,
     };
@@ -104,7 +103,7 @@ export default function TelaAdcClientes() {
           <input
             type="text"
             placeholder="RG, CPF ou CNPJ"
-            name="nomeCliente"
+            name="documento"
             onChange={atualizandoFormulario}
           />
 
@@ -120,38 +119,22 @@ export default function TelaAdcClientes() {
                 <input
                   type="checkbox"
                   name="nomeBeneficio"
-                  id="nomeBeneficioID"
+                  id={`nomeBeneficioID${index}`}
                   className={sty.btnFlex + " absolute left-[10px] top-[0px]"}
-                />
-                <label
-                  htmlFor="nomeBeneficio"
-                  onClick={(ev) => {
-                    const elementoCheck = ev.currentTarget
-                      .previousElementSibling as HTMLInputElement;
-                    const nomeBen = ev.currentTarget.children[0].textContent;
-                    const descricaoBen =
-                      ev.currentTarget.children[1].textContent;
-
-                    if (!ctrl) {
-                      ctrl = false;
-                      elementoCheck.checked = true;
-                      if (nomeBen && descricaoBen)
-<<<<<<< HEAD
-                        adicionarBeneficio(
-                          nomeBen,
-                          descricaoBen,
-                          beneficio.valorBeneficio
-                        );
-=======
-                        adicionarBeneficio(nomeBen, descricaoBen);
->>>>>>> 98c31bd6f83afdb359ceca34bfac0efa14905cfe
-                    } else if (ctrl) {
-                      ctrl = false;
-                      elementoCheck.checked = false;
-                      if (nomeBen) removerBeneficio(nomeBen);
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      console.log("Achei essa bosta");
+                      adicionarBeneficio(
+                        beneficio.nomeBeneficio,
+                        beneficio.descricaoBeneficio,
+                        beneficio.valorBeneficio
+                      );
+                    } else {
+                      removerBeneficio(beneficio.nomeBeneficio);
                     }
                   }}
-                >
+                />
+                <label htmlFor={`nomeBeneficioID${index}`}>
                   <h3>{beneficio.nomeBeneficio}</h3>
                   <p className="text-sm">{beneficio.descricaoBeneficio}</p>
                 </label>

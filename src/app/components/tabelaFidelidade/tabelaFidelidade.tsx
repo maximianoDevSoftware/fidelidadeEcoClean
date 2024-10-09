@@ -5,6 +5,8 @@ import { clienteTipo } from "@/types/clienteTipo";
 import { useEffect, useState } from "react";
 import { atualizandoClientesFidelidade } from "./apiTabela";
 import Link from "next/link";
+import { compraTipo } from "@/types/compraType";
+import { beneficiosCliente } from "@/app/clientes/beneficiosClientes";
 
 let travaInicial = false;
 
@@ -89,25 +91,53 @@ export default function TabelaFidelidade() {
             Nome do Cliente:
           </p>
           <h3 className="p-2 text-xl text-gray-800 inline-block">
-            {clienteEvidencia?.nomeCliente}
+            {clienteEvidencia?.nomeCliente.toUpperCase()}
           </h3>{" "}
           <br />
           <p className="p-4 text-xl text-gray-800 inline-block">
             Histórico de Compras:
           </p>
           <ul>
-            <li className="flex items-center justify-between px-4 py-2 text-sm text-gray-400">
-              <h1 className="p-2">Nome comprador</h1>
-              <h1 className="p-2">Promoção do comprador</h1>
-            </li>
             {clienteEvidencia?.compras.map((compra, index) => {
+              const diaDaCompra = new Date(compra.dia);
+
               return (
                 <li
-                  className="flex items-center justify-between px-4 py-2 text-sm"
+                  className={`w-[300px] mx-auto py-2 text-sm  border-b-2 border-b-green-500 overflow-hidden ${sty.histoFechado}`}
                   key={index}
+                  onClick={(ev) => {
+                    ev.currentTarget.classList.toggle(sty.histoFechado);
+                    if (ev.target === ev.currentTarget) {
+                    }
+                  }}
                 >
-                  <h1 className="p-2">{compra.nomeComprador}</h1>
-                  <h1 className="p-2">{compra.promocao.nome}</h1>
+                  <h1 className="p-2 flex justify-between">
+                    {compra.nomeComprador.toUpperCase()}{" "}
+                    <span>{`${diaDaCompra.getDate()}/${
+                      diaDaCompra.getMonth() + 1
+                    }/${diaDaCompra.getFullYear()}`}</span>
+                  </h1>
+                  <p className="px-2 py-1 flex justify-between">
+                    Horário da Compra:{" "}
+                    <span>{`${diaDaCompra.getHours()}:${diaDaCompra.getMinutes()}:${diaDaCompra.getSeconds()}`}</span>
+                  </p>
+                  <p className="px-2 py-1 flex justify-between">
+                    Valor: <span>R$ {compra.valorCompra}</span>
+                  </p>
+                  <p className="px-2 py-1 flex justify-between">
+                    Forma de Pagamento: <span>{`${compra.modoPagamento}`}</span>
+                  </p>
+                  <p className="px-2 py-1 flex justify-between">
+                    Desconto Fidelidade:{" "}
+                    <span>{`R$ ${calculandoDesconto(
+                      compra.valorCompra,
+                      compra,
+                      clienteEvidencia
+                    )}`}</span>
+                  </p>
+                  <h1 className="p-2 flex justify-between">
+                    {compra.promocao.nome}
+                  </h1>
                 </li>
               );
             })}
@@ -126,3 +156,61 @@ export default function TabelaFidelidade() {
     </>
   );
 }
+
+const calculandoDesconto = (
+  valor: string,
+  compra: compraTipo,
+  cliente: clienteTipo
+) => {
+  const valorTotal = parseFloat(valor.replace(",", "."));
+
+  let valorBeneficioPercentual;
+  if (compra.modoPagamento == "A vista") {
+    valorBeneficioPercentual = cliente.beneficios.filter((beneficio) => {
+      if (beneficio.nomeBeneficio == beneficiosCliente[0].nomeBeneficio) {
+        return beneficio.valorBeneficio;
+      }
+    });
+  }
+
+  if (compra.modoPagamento == "Débito") {
+    valorBeneficioPercentual = cliente.beneficios.filter((beneficio) => {
+      if (beneficio.nomeBeneficio == beneficiosCliente[0].nomeBeneficio) {
+        return beneficio.valorBeneficio;
+      }
+    });
+  }
+
+  if (compra.modoPagamento == "Crédito") {
+    valorBeneficioPercentual = cliente.beneficios.filter((beneficio) => {
+      if (beneficio.nomeBeneficio == beneficiosCliente[1].nomeBeneficio) {
+        console.log("Entramos no crédito");
+        return beneficio.valorBeneficio;
+      }
+    });
+  }
+
+  if (compra.modoPagamento == "Pix") {
+    valorBeneficioPercentual = cliente.beneficios.filter((beneficio) => {
+      if (beneficio.nomeBeneficio == beneficiosCliente[0].nomeBeneficio) {
+        return beneficio.valorBeneficio;
+      }
+    });
+  }
+
+  if (compra.modoPagamento == "Boleto") {
+    valorBeneficioPercentual = cliente.beneficios.filter((beneficio) => {
+      if (beneficio.nomeBeneficio == beneficiosCliente[1].nomeBeneficio) {
+        return beneficio.valorBeneficio;
+      }
+    });
+  }
+
+  let valorDesconto;
+  if (valorBeneficioPercentual) {
+    console.log(valorBeneficioPercentual[0].valorBeneficio);
+    valorDesconto =
+      (valorBeneficioPercentual[0].valorBeneficio * valorTotal) / 100;
+  }
+  return valorDesconto?.toFixed(2);
+};

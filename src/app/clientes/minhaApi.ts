@@ -5,10 +5,12 @@ import { compraTipo } from "@/types/compraType";
 
 export async function adicionandoCliente({
   nomeCliente,
+  documento,
   beneficios,
   compras,
 }: {
   nomeCliente: string;
+  documento: string;
   beneficios: beneficiosTipo[];
   compras: compraTipo[];
 }) {
@@ -16,6 +18,7 @@ export async function adicionandoCliente({
   const modelClienteFidelidade = connCliente.model("cliente");
   const gerandoCliente = new modelClienteFidelidade({
     nomeCliente,
+    documento,
     beneficios,
     compras,
   });
