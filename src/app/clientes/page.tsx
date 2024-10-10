@@ -68,7 +68,7 @@ export default function TelaAdcClientes() {
     const beneficios = setEstadoPagina({ estado: "Salvando Cliente..." });
 
     const dadosFinal: clienteTipo = {
-      nomeCliente: dadosForm.nomeCliente.toLowerCase(),
+      nomeCliente: removeAcentos(dadosForm.nomeCliente.toLowerCase()),
       documento: dadosForm.documento,
       beneficios: dadosForm.beneficios,
       compras: dadosForm.compras,
@@ -248,3 +248,7 @@ function QRCodeCanvas({ text }: { text: string }) {
     </>
   );
 }
+
+const removeAcentos = (texto: string) => {
+  return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
