@@ -1,5 +1,5 @@
 "use client";
-import { clienteTipo } from "@/types/clienteTipo";
+import { beneficiosTipo, clienteTipo } from "@/types/clienteTipo";
 import { FormEvent, useEffect, useState } from "react";
 import {
   atualizandoCliente,
@@ -111,8 +111,15 @@ export default function Cliente({ params }: Props) {
 
   const calculandoDesconto = (valor: string) => {
     const valorTotal = parseFloat(valor.replace(",", "."));
+    console.log(valorTotal);
 
-    let valorBeneficioPercentual;
+    let valorBeneficioPercentual: beneficiosTipo[] = [
+      {
+        nomeBeneficio: "Sem benefício",
+        descricaoBeneficio: "Sem descrição de beneficio",
+        valorBeneficio: 1,
+      },
+    ];
     if (dadosFormCompras.modoPagamento == "A vista") {
       valorBeneficioPercentual = dadosForm.beneficios.filter((beneficio) => {
         if (beneficio.nomeBeneficio == beneficiosCliente[0].nomeBeneficio) {
@@ -185,8 +192,7 @@ export default function Cliente({ params }: Props) {
     }
 
     let valorDesconto;
-    if (valorBeneficioPercentual) {
-      console.log(valorBeneficioPercentual[0].valorBeneficio);
+    if (valorBeneficioPercentual[0].valorBeneficio) {
       valorDesconto =
         (valorBeneficioPercentual[0].valorBeneficio * valorTotal) / 100;
     }
@@ -233,7 +239,7 @@ export default function Cliente({ params }: Props) {
             <div className={`w-[150px]`}>
               <h3>Valor da Compra</h3>
               <input
-                type="text"
+                type="number"
                 name="valorCompra"
                 defaultValue={(0).toFixed(2)}
                 className={`text-right`}
@@ -260,7 +266,11 @@ export default function Cliente({ params }: Props) {
             Desconto do Cliente: R${" "}
             <span className={`border-b-2 border-black`}>
               {dadosFormCompras.valorCompra
-                ? calculandoDesconto(dadosFormCompras.valorCompra)
+                ? calculandoDesconto2(
+                    dadosFormCompras.valorCompra,
+                    dadosFormCompras,
+                    dadosForm
+                  )
                 : "0,00"}
             </span>
           </h1>
@@ -355,3 +365,61 @@ export default function Cliente({ params }: Props) {
     </div>
   );
 }
+
+const calculandoDesconto2 = (
+  valor: string,
+  compra: compraTipo,
+  cliente: clienteTipo
+) => {
+  const valorTotal = parseFloat(valor.replace(",", "."));
+
+  let valorBeneficioPercentual;
+  if (compra.modoPagamento == "A vista") {
+    valorBeneficioPercentual = cliente.beneficios.filter((beneficio) => {
+      if (beneficio.nomeBeneficio == beneficiosCliente[0].nomeBeneficio) {
+        return beneficio.valorBeneficio;
+      }
+    });
+  }
+
+  if (compra.modoPagamento == "Débito") {
+    valorBeneficioPercentual = cliente.beneficios.filter((beneficio) => {
+      if (beneficio.nomeBeneficio == beneficiosCliente[0].nomeBeneficio) {
+        return beneficio.valorBeneficio;
+      }
+    });
+  }
+
+  if (compra.modoPagamento == "Crédito") {
+    valorBeneficioPercentual = cliente.beneficios.filter((beneficio) => {
+      if (beneficio.nomeBeneficio == beneficiosCliente[1].nomeBeneficio) {
+        console.log("Entramos no crédito");
+        return beneficio.valorBeneficio;
+      }
+    });
+  }
+
+  if (compra.modoPagamento == "Pix") {
+    valorBeneficioPercentual = cliente.beneficios.filter((beneficio) => {
+      if (beneficio.nomeBeneficio == beneficiosCliente[0].nomeBeneficio) {
+        return beneficio.valorBeneficio;
+      }
+    });
+  }
+
+  if (compra.modoPagamento == "Boleto") {
+    valorBeneficioPercentual = cliente.beneficios.filter((beneficio) => {
+      if (beneficio.nomeBeneficio == beneficiosCliente[1].nomeBeneficio) {
+        return beneficio.valorBeneficio;
+      }
+    });
+  }
+
+  let valorDesconto;
+  if (valorBeneficioPercentual) {
+    console.log(valorBeneficioPercentual[0].valorBeneficio);
+    valorDesconto =
+      (valorBeneficioPercentual[0].valorBeneficio * valorTotal) / 100;
+  }
+  return valorDesconto?.toFixed(2);
+};
