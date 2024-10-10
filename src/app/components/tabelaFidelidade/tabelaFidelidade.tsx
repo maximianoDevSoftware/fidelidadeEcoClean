@@ -53,7 +53,7 @@ export default function TabelaFidelidade() {
                       }}
                       className="clienteNome cursor-pointer"
                     >
-                      {cliente.nomeCliente}
+                      {cliente.nomeCliente.toUpperCase()}
                     </td>
                     <td className="clienteNumCompras">
                       {cliente.compras ? cliente.compras.length : "0"}
